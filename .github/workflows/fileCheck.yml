@@ -16,17 +16,20 @@ jobs:
     - name: Get file names and URLs
       run: |
         files=$(curl -Ls https://api.github.com/repos/${{ github.repository }}/contents)
+        file_count=$(echo $files | jq '. | length')
         file_names=$(echo $files | jq -r '.[].name')
         file_urls=$(echo $files | jq -r '.[].download_url')
 
-        file_data="$(echo "$file_names" | awk '{print NR "," $0}')"
-        file_data="$file_data $(echo "$file_urls" | awk '{print NR "," $0}')"
-
     - name: Generate JSON file
       run: |
-        echo '{' > file_data.json
-        echo "$file_data" | awk -F, 'NR > 1 {print "\""$2"\": \""$3"\""}' | tr '\n' ',' >> file_data.json
-        echo '}' >> file_data.json
+        echo '[' > file_data.json
+        for i in $(seq 0 $((file_count-1))); do
+          file_name=$(echo "$file_names" | awk -v line=$((i+1)) 'NR==line{print $0}')
+          file_url=$(echo "$file_urls" | awk -v line=$((i+1)) 'NR==line{print $0}')
+          echo "  {\"name\": \"$file_name\", \"url\": \"$file_url\"}," >> file_data.json
+        done
+        sed -i '$ s/.$//' file_data.json
+        echo ']' >> file_data.json
 
     - name: Upload JSON file
       uses: actions/upload-artifact@v2
