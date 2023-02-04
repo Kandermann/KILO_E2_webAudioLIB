@@ -27,12 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: getList
     steps:
-      - run: echo ${{needs.getList.outputs.files}} > list.txt
+      - run: echo ${{needs.getList.outputs.files}} > listShit.txt
       - name: upload shit  
         uses: actions/upload-artifact@v3
         with:
-          name: fileListFile
-          path: ListShit.txt
+          name: listShit
+          path: listShit.txt
 
       
     
