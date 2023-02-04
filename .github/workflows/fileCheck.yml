@@ -19,7 +19,6 @@ jobs:
         file_count=$(echo $files | jq '. | length')
         file_names=$(echo $files | jq -r '.[].name')
         file_urls=$(echo $files | jq -r '.[].download_url')
-        
         echo "File names: $file_names"
         echo "File URLs: $file_urls"
         
