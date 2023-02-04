@@ -32,7 +32,7 @@ jobs:
         echo ']' >> file_data.json
 
     - name: Upload JSON file
-      uses: actions/upload-artifact@v2
+      uses: actions/checkout@v2
       with:
         name: file_data.json
         path: file_data.json
