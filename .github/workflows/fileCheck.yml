@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2.4.2
+      uses: actions/checkout@v2.4.3
 
     - name: Get file names and URLs
       run: |
@@ -36,4 +36,3 @@ jobs:
       with:
         name: file_data.json
         path: file_data.json
-
