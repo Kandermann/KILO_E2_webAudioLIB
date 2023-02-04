@@ -25,9 +25,8 @@ jobs:
     - name: Generate JSON file
       run: |
         echo '[' > file_data.json
-        for i in $(seq 0 $((file_count-1))); do
-          file_name=$(echo "$file_names" | awk -v line=$((i+1)) 'NR==line{print $0}')
-          file_url=$(echo "$file_urls" | awk -v line=$((i+1)) 'NR==line{print $0}')
+        for file_name in $file_names; do
+          file_url=$(echo "$file_urls" | awk -v name="$file_name" '$0 ~ name {print $0; exit}')
           echo "  {\"name\": \"$file_name\", \"url\": \"$file_url\"}," >> file_data.json
         done
         sed -i '$ s/.$//' file_data.json
