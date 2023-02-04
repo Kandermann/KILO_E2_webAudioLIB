@@ -19,6 +19,7 @@ jobs:
 
     - name: Create JSON file
       run: |
+        echo $REPO_CONTENTS
         echo '{' > files.json
         FILES=$(echo $REPO_CONTENTS | jq -r '.[].name')
         for FILE in $FILES; do
