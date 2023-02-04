@@ -11,6 +11,18 @@
       {
          "name":"it Starts with one",
          "url":"it%20starts%20with%20one.mp3"
+      },
+      {
+         "name":"HELICOPTER HELICOPTER",
+         "url":"FAZLIJA-HELIKOPTER-.mp3"
+      },
+      {
+         "name":"another one bites the dust",
+         "url":"03-Another-One-Bites-The-Dust.mp3"
+      },
+      {
+         "name":"Got to get you into my life",
+         "url":"13%20-%20Got%20To%20Get%20You%20Into%20My%20Life.mp3"
       }
    ]
 }
