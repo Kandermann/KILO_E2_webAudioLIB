@@ -27,6 +27,14 @@
       {
          "name":"Got to get you into my life",
          "url":"13%20-%20Got%20To%20Get%20You%20Into%20My%20Life.mp3"
+      },
+      {
+         "name":"INITIAL D - 90s run",
+         "url":"Initial%20D%20-%20Running%20in%20The%2090s.mp3"
+      },
+      {
+         "name":"INITIAL D - Deja vu",
+         "url":"Initial%20D%20-%20Deja%20Vu.mp3"
       }
    ]
 }
