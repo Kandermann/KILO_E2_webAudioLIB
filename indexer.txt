@@ -1,0 +1,8 @@
+{
+   "songs" : [
+      {
+         "name" : "Manuel - Gas Gas Gas",
+         "url" : "Manuel%20-%20Gas%20Gas%20Gas.mp3"
+      }
+   ]
+}
