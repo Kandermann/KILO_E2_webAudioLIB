@@ -22,6 +22,7 @@ jobs:
         echo '{' > files.json
         FILES=$(echo $REPO_CONTENTS | jq -r '.[].name')
         for FILE in $FILES; do
+          echo $FILE
           echo '"'$FILE'": {' >> files.json
           echo '  "type": "file",' >> files.json
           echo '  "url": "https://github.com/'${{ github.repository }}'/blob/'${{ github.sha }}'/'$FILE'"' >> files.json
