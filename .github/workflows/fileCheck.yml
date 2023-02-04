@@ -21,7 +21,7 @@ jobs:
       run: |
         echo $REPO_CONTENTS
         echo '{' > files.json
-        FILES=$(echo $REPO_CONTENTS | jq -r '.[].name')
+        FILES=$(echo $REPO_CONTENTS | jq '.[].name' -r)
         for FILE in $FILES; do
           echo $FILE
           echo '"'$FILE'": {' >> files.json
