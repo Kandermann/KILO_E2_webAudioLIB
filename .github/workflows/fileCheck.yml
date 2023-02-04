@@ -32,8 +32,13 @@ jobs:
             echo "  {\"name\": \"$file_name\", \"url\": \"$file_url\"}," >> file_data.json
           fi
         done
-        sed -i '$ s/.$//' file_data.json
-        echo ']' >> file_data.json
+        if [ $(wc -l < file_data.json) -eq 1 ]; then
+          echo "No files found with a non-null download URL."
+        else
+          sed -i '$ s/.$//' file_data.json
+          echo ']' >> file_data.json
+        fi
+
 
     - name: Upload JSON file
       uses: actions/upload-artifact@v2.2.1
