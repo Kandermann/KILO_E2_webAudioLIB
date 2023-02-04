@@ -1,4 +1,4 @@
-name: Generate JSON file
+name: Create JSON file
 
 on:
   push:
@@ -6,42 +6,32 @@ on:
       - main
 
 jobs:
-  generate_json:
+  build:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
 
-    - name: Get file names and URLs
+    - name: Get repository contents
       run: |
-        files=$(curl -Ls -H "Accept: application/vnd.github.v3.raw" https://api.github.com/repos/${{ github.repository }}/contents)
-        file_count=$(echo $files | jq '. | length')
-        file_names=$(echo $files | jq -r '.[].name')
-        file_urls=$(echo $files | jq -r '.[].download_url')
-        echo "File names: $file_names"
-        echo "File URLs: $file_urls"
-        
-    - name: Generate JSON file
+        REPO_CONTENTS=$(curl -s -H "Accept: application/vnd.github+json" https://api.github.com/repos/${{ github.repository }}/contents)
+
+    - name: Create JSON file
       run: |
-        echo '[' > file_data.json
-        for i in $(seq 0 $((file_count-1))); do
-          file_name=$(echo "$file_names" | awk -v line=$((i+1)) 'NR==line{print $0}')
-          file_url=$(echo "$file_urls" | awk -v line=$((i+1)) 'NR==line{print $0}')
-          if [ "$file_url" != "null" ]; then
-            echo "  {\"name\": \"$file_name\", \"url\": \"$file_url\"}," >> file_data.json
-          fi
+        echo '{' > files.json
+        FILES=$(echo $REPO_CONTENTS | jq -r '.[].name')
+        for FILE in $FILES; do
+          echo '"'$FILE'": {' >> files.json
+          echo '  "type": "file",' >> files.json
+          echo '  "url": "https://github.com/'${{ github.repository }}'/blob/'${{ github.sha }}'/'$FILE'"' >> files.json
+          echo '},' >> files.json
         done
-        if [ $(wc -l < file_data.json) -eq 1 ]; then
-          echo "No files found with a non-null download URL."
-        else
-          sed -i '$ s/.$//' file_data.json
-          echo ']' >> file_data.json
-        fi
-
+        sed -i '$ s/.$//' files.json
+        echo '}' >> files.json
 
     - name: Upload JSON file
-      uses: actions/upload-artifact@v2.2.1
+      uses: actions/upload-artifact@v2
       with:
-        name: file_data.json
-        path: file_data.json
+        name: files
+        path: files.json
