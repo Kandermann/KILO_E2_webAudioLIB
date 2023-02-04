@@ -1,11 +1,11 @@
 {
-   "songs" : [
+   "songs":[
       {
-         "name" : "Manuel - Gas Gas Gas",
-         "url" : "Manuel%20-%20Gas%20Gas%20Gas.mp3"
+         "name":"Manuel - Gas Gas Gas",
+         "url":"Manuel%20-%20Gas%20Gas%20Gas.mp3"
       },
       {
-         "name" : "Saul goodman",
-         "url" : "Saul%20Goodman%20Meme%20Song.mp3"
-   ]
-}
+         "name":"Saul goodman",
+         "url":"Saul%20Goodman%20Meme%20Song.mp3"
+      ]
+   }
