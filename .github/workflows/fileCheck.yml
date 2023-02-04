@@ -15,7 +15,7 @@ jobs:
 
     - name: Get file names and URLs
       run: |
-        files=$(curl -Ls https://api.github.com/repos/${{ github.repository }}/contents)
+        files=$(curl -Ls https://api.github.com/repos/${{ github.repository }})
         file_names=$(echo $files | jq -r '.[].name')
         file_urls=$(echo $files | jq -r '.[].download_url')
 
