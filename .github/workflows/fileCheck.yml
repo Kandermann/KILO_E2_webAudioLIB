@@ -1,46 +1,38 @@
 name: Generate JSON file
 
 on:
-  workflow_dispatch:
-  
   push:
     branches:
       - main
 
 jobs:
-  build:
+  generate_json:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v2.4.2
 
-    - name: Get MP3 files
+    - name: Get file names and URLs
       run: |
-        echo "Collecting MP3 files..."
-        mp3_files=$(find . -type f -name "*.mp3")
-        echo "Found the following MP3 files:"
-        echo "$mp3_files"
+        files=$(curl -Ls https://api.github.com/repos/${{ github.repository }}/contents)
+        file_count=$(echo $files | jq '. | length')
+        file_names=$(echo $files | jq -r '.[].name')
+        file_urls=$(echo $files | jq -r '.[].download_url')
 
     - name: Generate JSON file
       run: |
-        echo "Generating JSON file..."
-        echo '{"files": [' > file_list.json
-        while read -r line; do
-          file_name=$(basename "$line")
-          echo "    {\"file_name\": \"$file_name\", \"file_link\": \"https://github.com/$GITHUB_REPOSITORY/raw/main/$line\"}," >> file_list.json
-        done <<< "$mp3_files"
-        echo "  ]}" >> file_list.json
+        echo '[' > file_data.json
+        for i in $(seq 0 $((file_count-1))); do
+          file_name=$(echo "$file_names" | awk -v line=$((i+1)) 'NR==line{print $0}')
+          file_url=$(echo "$file_urls" | awk -v line=$((i+1)) 'NR==line{print $0}')
+          echo "  {\"name\": \"$file_name\", \"url\": \"$file_url\"}," >> file_data.json
+        done
+        sed -i '$ s/.$//' file_data.json
+        echo ']' >> file_data.json
 
-    - name: Commit and push JSON file
-      uses: actions/github-script@v3
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Upload JSON file
+      uses: actions/upload-artifact@v2.0.6
       with:
-        script: |
-          echo "Committing and pushing JSON file..."
-          git config --global user.email "actions@github.com"
-          git config --global user.name "GitHub Actions"
-          git add file_list.json
-          git commit -m "Add file_list.json"
-          git push origin main
+        name: file_data.json
+        path: file_data.json
