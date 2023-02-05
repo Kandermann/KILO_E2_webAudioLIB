@@ -23,5 +23,5 @@ jobs:
         files=$(echo "${{ steps.get-files.outputs.files }}" | tr ' ' '\n')
         for file in $files; do
           echo "Adding $file to JSON file"
-          # Add code to add each file to a JSON file here
+          echo "name":"$file" >> indexer.txt
         done
