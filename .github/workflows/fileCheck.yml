@@ -27,3 +27,9 @@ jobs:
           echo "  {\"name\": \"$file\", \"url\": \"URL\"}," >> songs.json
         done
         echo ']}' >> songs.json
+
+    - name: Upload JSON file
+      uses: actions/upload-artifact@v2
+      with:
+        name: songs.json
+        path: songs.json
