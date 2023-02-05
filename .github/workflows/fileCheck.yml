@@ -23,12 +23,12 @@ jobs:
         files=$(echo "${{ steps.get-files.outputs.files }}" | tr ' ' '\n')
         for file in $files; do
           echo "Adding $file to JSON file"
-          echo "name":"$file" >> files.txt
+          echo "name":"$file" >> filese.txt
         done
 
 
     - name: Upload JSON file
       uses: actions/upload-artifact@v2
       with:
-        name: files
-        path: files.txt
+        name: filese
+        path: filese.txt
