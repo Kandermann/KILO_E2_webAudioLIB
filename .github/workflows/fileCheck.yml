@@ -20,15 +20,10 @@ jobs:
 
     - name: Add files to JSON file
       run: |
+        echo '{"songs": [' > songs.json
         files=$(echo "${{ steps.get-files.outputs.files }}" | tr ' ' '\n')
         for file in $files; do
           echo "Adding $file to JSON file"
-          echo "name":"$file" >> filese.txt
+          echo "  {\"name\": \"$file\", \"url\": \"URL\"}," >> songs.json
         done
-
-
-    - name: Upload JSON file
-      uses: actions/upload-artifact@v2
-      with:
-        name: filese
-        path: filese.txt
+        echo ']}' >> songs.json
